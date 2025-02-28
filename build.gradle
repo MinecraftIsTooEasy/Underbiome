@@ -19,7 +19,7 @@ repositories {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/hellofml.accesswidener")
+    accessWidenerPath = file("src/main/resources/underbiome.accesswidener")
     mergedMinecraftJar()
     setFML(new File("libs\\FishModLoader-v3.4.1.jar"))
     mods {
@@ -39,6 +39,7 @@ dependencies {
     mappings loom.fmlMCPMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+    implementation("org.joml:joml:1.10.8")
     implementation files(loom.getFML().toPath())
 }
 
