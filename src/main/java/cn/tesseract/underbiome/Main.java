@@ -1,16 +1,17 @@
 package cn.tesseract.underbiome;
 
-import cn.tesseract.underbiome.biome.BiomeMyceliumPatches;
+import cn.tesseract.underbiome.biome.BiomeDeepCold;
+import cn.tesseract.underbiome.biome.BiomeUndergarden;
 import cn.tesseract.underbiome.biome.GenLayerUnderbiome;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.BiomeGenBase;
 
 public class Main implements ModInitializer {
     public static final String MOD_ID = "underbiome";
-    public static final BiomeGenBase myceliumPatches = new BiomeMyceliumPatches(70);
 
     @Override
     public void onInitialize() {
-        GenLayerUnderbiome.biomes.add(myceliumPatches, 20);
+        //GenLayerUnderbiome.biomes.add(new BiomeLushCave(70), 20);
+        //GenLayerUnderbiome.biomes.add(new BiomeUndergarden(71), 20);
+        GenLayerUnderbiome.biomes.add(new BiomeDeepCold(72), 20);
     }
 }

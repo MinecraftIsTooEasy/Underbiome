@@ -1,5 +1,7 @@
 package cn.tesseract.underbiome.util;
 
+import net.fabricmc.loader.impl.lib.sat4j.pb.tools.WeightedObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

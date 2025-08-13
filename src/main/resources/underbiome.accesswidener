@@ -1,2 +1,5 @@
 accessWidener v2 named
 accessible field net/minecraft/BiomeDecorator bigMushroomGen Lnet/minecraft/WorldGenerator;
+accessible method net/minecraft/BiomeGenUnderworld placeMycelium (Lnet/minecraft/World;II)V
+accessible method net/minecraft/BlockVine getMetadataForFace (Lnet/minecraft/EnumFace;)I
+accessible method net/minecraft/BiomeGenBase setTemperatureRainfall (FF)Lnet/minecraft/BiomeGenBase;

@@ -1,6 +1,7 @@
 package cn.tesseract.underbiome.world;
 
-import cn.tesseract.underbiome.biome.BiomeGenUnderBase;
+import cn.tesseract.underbiome.biome.BiomeDeepCold;
+import cn.tesseract.underbiome.biome.BiomeUnderworldBase;
 import net.minecraft.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ChunkProviderUnderbiome implements IChunkProvider {
     double[] noiseData3;
     double[] noiseData4;
     double[] noiseData5;
+    private MapGenBase ravineGenerator = new MapGenRavine();
 
     public ChunkProviderUnderbiome(World par1World, long par2) {
         this.worldObj = par1World;
@@ -111,22 +113,24 @@ public class ChunkProviderUnderbiome implements IChunkProvider {
     public void replaceBlocksForBiome(int cx, int cz, byte[] blocks) {
         for (int x = 0; x < 16; ++x) {
             for (int z = 0; z < 16; ++z) {
-                BiomeGenBase biomegenbase = biomesForGeneration[x << 4 | z];
+                if (biomesForGeneration[x << 4 | z] instanceof BiomeUnderworldBase under) {
+                    this.hellRNG.nextDouble();
+                    this.hellRNG.nextDouble();
+                    this.hellRNG.nextDouble();
 
-                byte topBlock, fillerBlock;
-                int fillerDepth;
+                    for (int y = 127; y >= 0; --y) {
+                        int index = (z << 4 | x) << 7 | y;
 
-                this.hellRNG.nextDouble();
-                this.hellRNG.nextDouble();
-                this.hellRNG.nextDouble();
-
-                for (int y = 127; y >= 0; --y) {
-                    int index = (z << 4 | x) << 7 | y;
-
-                    if (index < 32767)
-                        if (blocks[index] == 1 && blocks[index + 1] == 0 && biomegenbase instanceof BiomeGenUnderBase under) {
-                            under.buildSurface(index, blocks, hellRNG);
-                        }
+                        if (index > 0 && index < 32767)
+                            if (blocks[index] == 1) {
+                                if (blocks[index + 1] == 0)
+                                    under.buildSurface(index, blocks, hellRNG);
+                                if (blocks[index - 1] == 0)
+                                    under.buildCelling(index, blocks, hellRNG);
+                            } else if (under instanceof BiomeDeepCold && blocks[index] == Block.waterStill.blockID && blocks[index + 1] == 0) {
+                                blocks[index] = (byte) Block.ice.blockID;
+                            }
+                    }
                 }
             }
         }
@@ -145,6 +149,7 @@ public class ChunkProviderUnderbiome implements IChunkProvider {
             this.hellRNG.setSeed((long) par1 * 341873128712L + (long) par2 * 132897987541L);
             byte[] var3 = new byte['耀'];
             this.generateNetherTerrain(par1, par2, var3);
+            this.ravineGenerator.generate(this, this.worldObj, par1, par2, var3);
             biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
             this.replaceBlocksForBiome(par1, par2, var3);
             ChunkProviderGenerate.placeRandomCobwebs(par1, par2, var3, this.hellRNG);
